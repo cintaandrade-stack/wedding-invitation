@@ -99,10 +99,6 @@ body {
   position: relative;
 }
 
-.card:hover {
-  filter: brightness(1.05);
-}
-
 .card.flipped {
   transform: rotateY(180deg);
 }
@@ -116,17 +112,10 @@ body {
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   object-fit: contain;
   background: transparent;
-  display: block;
 }
 
 .card-back {
   transform: rotateY(180deg);
-}
-
-.card-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 /* Placeholder for card faces */
@@ -270,9 +259,13 @@ envelopeContainer.addEventListener('click', () => {
 });
 
 // Flip card
-card.addEventListener('click', (e) => {
+const flipCard = (e) => {
   e.stopPropagation();
+  e.preventDefault();
   card.classList.toggle('flipped');
+  
+  // Force repaint to ensure back image shows
+  void card.offsetWidth;
   
   // Hide instruction after first flip
   if (instruction.classList.contains('show')) {
@@ -280,7 +273,10 @@ card.addEventListener('click', (e) => {
       instruction.classList.remove('show');
     }, 2000);
   }
-});
+};
+
+card.addEventListener('click', flipCard);
+card.addEventListener('touchend', flipCard);
 
 // Prevent body scrolling on mobile
 document.body.addEventListener('touchmove', (e) => {
