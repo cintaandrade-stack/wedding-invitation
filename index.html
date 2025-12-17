@@ -112,6 +112,7 @@ body {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   object-fit: contain;
   background: transparent;
@@ -242,6 +243,17 @@ const envelopeContainer = document.getElementById('envelope-container');
 const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
 const instruction = document.getElementById('instruction');
+
+// Preload images to prevent lag
+const preloadImages = () => {
+  const img1 = new Image();
+  const img2 = new Image();
+  img1.src = 'invite-front.jpg';
+  img2.src = 'invite-back.jpg';
+};
+
+// Preload when page loads
+preloadImages();
 
 // Open envelope and reveal invitation
 envelopeContainer.addEventListener('click', () => {
