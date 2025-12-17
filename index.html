@@ -14,35 +14,41 @@ html, body {
 }
 
 body {
-  background: url('background.jpg') center center / cover no-repeat;
+  background: url('background.jpg') center center / cover no-repeat fixed;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-family: serif;
 }
 
+/* ENVELOPE */
 #envelope {
-  width: 300px;
+  width: 600px; /* 2x bigger */
   cursor: pointer;
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
 }
 
-#card {
+/* INVITATION WRAPPER */
+#invitation {
+  position: absolute;
+  top: 45%; /* slightly higher than center */
+  transform: translate(-50%, -50%) scale(0.85);
+  left: 50%;
   display: none;
-  width: 320px;
-  perspective: 1000px;
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* CARD FLIP */
+.card {
+  width: 650px; /* 2x bigger */
+  transform-style: preserve-3d;
+  transition: transform 1s ease;
   cursor: pointer;
 }
 
-.card-inner {
-  position: relative;
-  width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 1s;
-}
-
-.card-inner.flipped {
+.card.flipped {
   transform: rotateY(180deg);
 }
 
@@ -62,8 +68,8 @@ body {
 
 <img id="envelope" src="envelope.png" alt="Envelope">
 
-<div id="card">
-  <div class="card-inner" id="cardInner">
+<div id="invitation">
+  <div class="card" id="card">
     <img class="card-face" src="invite-front.jpg">
     <img class="card-face card-back" src="invite-back.jpg">
   </div>
@@ -71,20 +77,26 @@ body {
 
 <script>
 const envelope = document.getElementById('envelope');
+const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
-const cardInner = document.getElementById('cardInner');
 
 envelope.addEventListener('click', () => {
   envelope.style.opacity = '0';
-  envelope.style.transform = 'scale(0.9)';
+  envelope.style.transform = 'scale(0.85)';
+
   setTimeout(() => {
     envelope.style.display = 'none';
-    card.style.display = 'block';
-  }, 600);
+    invitation.style.display = 'block';
+
+    requestAnimationFrame(() => {
+      invitation.style.opacity = '1';
+      invitation.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+  }, 800);
 });
 
 card.addEventListener('click', () => {
-  cardInner.classList.toggle('flipped');
+  card.classList.toggle('flipped');
 });
 </script>
 
