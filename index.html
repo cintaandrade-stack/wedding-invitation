@@ -115,10 +115,17 @@ body {
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   object-fit: contain;
   background: transparent;
+  display: block;
 }
 
 .card-back {
   transform: rotateY(180deg);
+}
+
+.card-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Placeholder for card faces */
@@ -220,19 +227,11 @@ body {
 
 <div id="invitation">
   <div class="card" id="card">
-    <img class="card-face" src="invite-front.jpg" alt="Invitation Front" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-    <div class="card-face card-placeholder" style="display: none;">
-      <h2>You're Invited!</h2>
-      <p>Join us as we celebrate<br>our special day</p>
-      <p style="margin-top: 20px; font-size: 14px; color: #999;">(Click to flip)</p>
-    </div>
+    <!-- Front of invitation -->
+    <img class="card-face" src="invite-front.jpg" alt="Invitation Front">
     
-    <img class="card-face card-back" src="invite-back.jpg" alt="Invitation Back" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-    <div class="card-face card-back card-placeholder" style="display: none;">
-      <h2>Wedding Details</h2>
-      <p>Date & Time<br>Location<br>RSVP Information</p>
-      <p style="margin-top: 20px; font-size: 14px; color: #999;">(Click to flip back)</p>
-    </div>
+    <!-- Back of invitation (church image) -->
+    <img class="card-face card-back" src="invite-back.jpg" alt="Invitation Back">
   </div>
 </div>
 
