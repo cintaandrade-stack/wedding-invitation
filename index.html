@@ -6,11 +6,16 @@
 <title>Wedding Invitation</title>
 
 <style>
-html, body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -18,34 +23,84 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  font-family: 'Georgia', serif;
 }
 
-/* ENVELOPE */
-#envelope {
-  width: 600px; /* 2x bigger */
+/* ENVELOPE CONTAINER */
+#envelope-container {
+  position: relative;
+  width: 90vw;
+  max-width: 600px;
   cursor: pointer;
   transition: transform 0.8s ease, opacity 0.8s ease;
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+}
+
+#envelope-container:hover {
+  transform: scale(1.05);
+}
+
+#envelope-container.hide {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+#envelope-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Placeholder envelope (if image fails to load) */
+.envelope-placeholder {
+  width: 100%;
+  aspect-ratio: 3/2;
+  background: linear-gradient(to bottom, #f9f9f9 0%, #e8e8e8 100%);
+  border: 3px solid #d4af37;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #d4af37;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 /* INVITATION WRAPPER */
 #invitation {
   position: absolute;
-  top: 45%; /* slightly higher than center */
-  transform: translate(-50%, -50%) scale(0.85);
+  top: 45%;
   left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
   display: none;
   opacity: 0;
   transition: opacity 1s ease, transform 1s ease;
+  perspective: 1500px;
+  width: 90vw;
+  max-width: 650px;
+}
+
+#invitation.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 /* CARD FLIP */
 .card {
-  width: 650px; /* 2x bigger */
+  width: 100%;
+  aspect-ratio: 3/4;
   transform-style: preserve-3d;
-  transition: transform 1s ease;
+  transition: transform 0.8s ease;
   cursor: pointer;
+  position: relative;
+}
+
+.card:hover {
+  filter: brightness(1.05);
 }
 
 .card.flipped {
@@ -55,49 +110,171 @@ body {
 .card-face {
   position: absolute;
   width: 100%;
+  height: 100%;
   backface-visibility: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  object-fit: contain;
+  background: transparent;
 }
 
 .card-back {
   transform: rotateY(180deg);
+}
+
+/* Placeholder for card faces */
+.card-placeholder {
+  background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+  border: 2px solid #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
+  text-align: center;
+  color: #333;
+}
+
+.card-placeholder h2 {
+  font-size: 32px;
+  color: #d4af37;
+  margin-bottom: 20px;
+}
+
+.card-placeholder p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* Instruction text */
+.instruction {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 18px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.instruction.show {
+  opacity: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  #envelope-container {
+    max-width: 85vw;
+  }
+  
+  #invitation {
+    max-width: 85vw;
+  }
+  
+  .instruction {
+    font-size: 16px;
+    bottom: 20px;
+  }
+  
+  .card-placeholder h2 {
+    font-size: 24px;
+  }
+  
+  .card-placeholder p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .envelope-placeholder {
+    font-size: 18px;
+  }
+  
+  .card-placeholder {
+    padding: 20px;
+  }
+  
+  .card-placeholder h2 {
+    font-size: 20px;
+  }
+  
+  .card-placeholder p {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<img id="envelope" src="envelope.png" alt="Envelope">
-
-<div id="invitation">
-  <div class="card" id="card">
-    <img class="card-face" src="invite-front.jpg">
-    <img class="card-face card-back" src="invite-back.jpg">
+<div id="envelope-container">
+  <img id="envelope-img" src="envelope.png" alt="Click to open" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <div class="envelope-placeholder" style="display: none;">
+    ✉️<br>Click to Open<br>Your Invitation
   </div>
 </div>
 
+<div id="invitation">
+  <div class="card" id="card">
+    <img class="card-face" src="invite-front.jpg" alt="Invitation Front" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="card-face card-placeholder" style="display: none;">
+      <h2>You're Invited!</h2>
+      <p>Join us as we celebrate<br>our special day</p>
+      <p style="margin-top: 20px; font-size: 14px; color: #999;">(Click to flip)</p>
+    </div>
+    
+    <img class="card-face card-back" src="invite-back.jpg" alt="Invitation Back" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="card-face card-back card-placeholder" style="display: none;">
+      <h2>Wedding Details</h2>
+      <p>Date & Time<br>Location<br>RSVP Information</p>
+      <p style="margin-top: 20px; font-size: 14px; color: #999;">(Click to flip back)</p>
+    </div>
+  </div>
+</div>
+
+<div class="instruction" id="instruction">Click the invitation to flip it over</div>
+
 <script>
-const envelope = document.getElementById('envelope');
+const envelopeContainer = document.getElementById('envelope-container');
 const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
+const instruction = document.getElementById('instruction');
 
-envelope.addEventListener('click', () => {
-  envelope.style.opacity = '0';
-  envelope.style.transform = 'scale(0.85)';
+// Open envelope and reveal invitation
+envelopeContainer.addEventListener('click', () => {
+  envelopeContainer.classList.add('hide');
 
   setTimeout(() => {
-    envelope.style.display = 'none';
-    invitation.style.display = 'block';
-
-    requestAnimationFrame(() => {
-      invitation.style.opacity = '1';
-      invitation.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
+    invitation.classList.add('show');
+    
+    // Show instruction after invitation appears
+    setTimeout(() => {
+      instruction.classList.add('show');
+    }, 1000);
   }, 800);
 });
 
-card.addEventListener('click', () => {
+// Flip card
+card.addEventListener('click', (e) => {
+  e.stopPropagation();
   card.classList.toggle('flipped');
+  
+  // Hide instruction after first flip
+  if (instruction.classList.contains('show')) {
+    setTimeout(() => {
+      instruction.classList.remove('show');
+    }, 2000);
+  }
 });
+
+// Prevent body scrolling on mobile
+document.body.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+}, { passive: false });
 </script>
 
 </body>
