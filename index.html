@@ -98,7 +98,6 @@ body {
   cursor: pointer;
   position: relative;
   background: transparent;
-  overflow: hidden;
 }
 
 .card.flipped {
@@ -119,8 +118,14 @@ body {
   display: block;
 }
 
+.card-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
 .card-back {
   transform: rotateY(180deg);
+  z-index: 1;
 }
 
 .card-back {
@@ -229,7 +234,7 @@ body {
 <div id="invitation">
   <div class="card" id="card">
     <!-- Front of invitation -->
-    <img class="card-face" src="invite-front.jpg" alt="Invitation Front">
+    <img class="card-face card-front" src="invite-front.jpg" alt="Invitation Front">
     
     <!-- Back of invitation (church image) -->
     <img class="card-face card-back" src="invite-back.jpg" alt="Invitation Back">
@@ -247,8 +252,15 @@ const card = document.getElementById('card');
 const preloadImages = () => {
   const img1 = new Image();
   const img2 = new Image();
-  img1.src = 'invite-front.jpg';
-  img2.src = 'invite-back.jpg';
+  const img3 = new Image();
+  img1.src = 'background.jpg';
+  img2.src = 'invite-front.jpg';
+  img3.src = 'invite-back.jpg';
+  
+  // Log when images are loaded
+  img2.onload = () => console.log('Front image loaded');
+  img3.onload = () => console.log('Back image loaded');
+  img3.onerror = () => console.error('Back image failed to load - check filename');
 };
 
 // Preload when page loads
