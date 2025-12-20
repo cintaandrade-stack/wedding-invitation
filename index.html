@@ -81,6 +81,7 @@ body {
   perspective: 1500px;
   width: 90vw;
   max-width: 650px;
+  overflow: hidden;
 }
 
 #invitation.show {
@@ -110,13 +111,11 @@ body {
   height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
   object-fit: contain;
   background: transparent;
   border: none;
   outline: none;
   display: block;
-  clip-path: inset(0 0 0 0);
 }
 
 .card-front {
@@ -159,8 +158,8 @@ body {
 
 /* Instruction text */
 .instruction {
-  position: absolute;
-  bottom: 30px;
+  position: fixed;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -170,13 +169,14 @@ body {
   transition: opacity 0.5s ease;
   pointer-events: none;
   text-align: center;
-  padding: 0 20px;
-  display: none;
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  z-index: 1000;
 }
 
 .instruction.show {
   opacity: 1;
-  display: block;
 }
 
 /* Mobile responsive */
@@ -244,10 +244,13 @@ body {
 
 
 
+<div class="instruction" id="instruction">Click to flip invitation</div>
+
 <script>
 const envelopeContainer = document.getElementById('envelope-container');
 const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
+const instruction = document.getElementById('instruction');
 
 // Preload images to prevent lag
 const preloadImages = () => {
@@ -273,6 +276,11 @@ envelopeContainer.addEventListener('click', () => {
 
   setTimeout(() => {
     invitation.classList.add('show');
+    
+    // Show instruction after invitation appears
+    setTimeout(() => {
+      instruction.classList.add('show');
+    }, 800);
   }, 800);
 });
 
