@@ -98,6 +98,7 @@ body {
   cursor: pointer;
   position: relative;
   background: transparent;
+  overflow: hidden;
 }
 
 .card.flipped {
@@ -230,13 +231,12 @@ body {
   </div>
 </div>
 
-<div class="instruction" id="instruction">Click the invitation to flip it over</div>
+
 
 <script>
 const envelopeContainer = document.getElementById('envelope-container');
 const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
-const instruction = document.getElementById('instruction');
 
 // Preload images to prevent lag
 const preloadImages = () => {
@@ -255,11 +255,6 @@ envelopeContainer.addEventListener('click', () => {
 
   setTimeout(() => {
     invitation.classList.add('show');
-    
-    // Show instruction after invitation appears
-    setTimeout(() => {
-      instruction.classList.add('show');
-    }, 1000);
   }, 800);
 });
 
@@ -272,12 +267,7 @@ const flipCard = (e) => {
   // Force repaint to ensure back image shows
   void card.offsetWidth;
   
-  // Hide instruction after first flip
-  if (instruction.classList.contains('show')) {
-    setTimeout(() => {
-      instruction.classList.remove('show');
-    }, 2000);
-  }
+
 };
 
 card.addEventListener('click', flipCard);
