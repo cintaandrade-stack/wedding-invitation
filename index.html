@@ -179,6 +179,38 @@ body {
   opacity: 1;
 }
 
+.envelope-instruction {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 20px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  text-align: center;
+  padding: 12px 24px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 25px;
+  z-index: 1000;
+  animation: pulse 2s infinite;
+}
+
+.envelope-instruction.hide {
+  opacity: 0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   #envelope-container {
@@ -244,6 +276,7 @@ body {
 
 
 
+<div class="envelope-instruction" id="envelope-instruction">Tap to open envelope</div>
 <div class="instruction" id="instruction">Click to flip invitation</div>
 
 <script>
@@ -251,6 +284,7 @@ const envelopeContainer = document.getElementById('envelope-container');
 const invitation = document.getElementById('invitation');
 const card = document.getElementById('card');
 const instruction = document.getElementById('instruction');
+const envelopeInstruction = document.getElementById('envelope-instruction');
 
 // Preload images to prevent lag
 const preloadImages = () => {
@@ -273,6 +307,7 @@ preloadImages();
 // Open envelope and reveal invitation
 envelopeContainer.addEventListener('click', () => {
   envelopeContainer.classList.add('hide');
+  envelopeInstruction.classList.add('hide');
 
   setTimeout(() => {
     invitation.classList.add('show');
